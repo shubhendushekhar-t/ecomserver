@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+import Schema from "mongoose";
 
 const userSchema = new Schema({
   name: {
@@ -14,11 +14,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  phone:{
-    type: String,
-    required: true,
-    unique: true
+  isAdmin: {
+    type: Boolean,
+    default: false,
   }
 });
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

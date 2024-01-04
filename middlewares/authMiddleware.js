@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import userModel from "../models/userModel.js";
 
 export const requireSignIn = (req, res, next) => {
   const token = req.headers.authorization;
@@ -17,3 +18,25 @@ export const requireSignIn = (req, res, next) => {
         });
     }
 };
+
+
+export const isAdmin = async (req, res, next) => {
+    try {
+      const user = await userModel.findById(req.user._id);
+      if (user.isAdmin !== true) {
+        return res.status(401).send({
+          success: false,
+          message: "UnAuthorized Access",
+        });
+      } else {
+        next();
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(401).send({
+        success: false,
+        error,
+        message: "Error in admin middelware",
+      });
+    }
+  };
